@@ -5,6 +5,7 @@ import ThreeDots from "../threedots/ThreeDots";
 import Avatar from "../avatar/Avatar";
 import ChatBot from "../chatbot/chatbot";
 import Owner from "../owner/owner";
+// import DatePicker from 'react-mobile-datepicker';
 import Button from "../button/button";
 import Alert from "@material-ui/lab/Alert";
 import UserContext from "../../Context/userContext";
@@ -220,11 +221,15 @@ function FirstFunctionalComp() {
   };
 
   let onClickImage = num => {
-    if (state.toggle === true) return false;
+    if (state.toggle === true) {
+      console.log(state.his);
+      return false;
+    }
     let mg = state.his;
+    let qs = state.questionNum;
+    let ans = state.answerNum;
     let newArray = mg.slice(0, num * 1);
     if (num === 3) {
-      console.log(num, newArray);
       setState({
         ...state,
         questionNum: 0,
@@ -233,7 +238,6 @@ function FirstFunctionalComp() {
         questionPoint: 1,
         hisNum: 2
       });
-      console.log(state.his);
     } else if (num === 5) {
       setState({
         ...state,
@@ -262,14 +266,20 @@ function FirstFunctionalComp() {
         hisNum: 12
       });
     }
+
     setState({
       ...state,
-      his: newArray,
       toggle: true,
       message: 1
     });
+
     setTimeout(() => {
-      setState({ ...state, message: null });
+      setState({
+        ...state,
+        his: newArray,
+        questionNum: qs - 1,
+        message: null
+      });
     }, 2000);
   };
 
@@ -348,17 +358,14 @@ function FirstFunctionalComp() {
             </div>
           </div>
           {answer.map((item, index) => {
-            // console.log(state.questionNum === index);
-            // if (state.questionNum === index) {
-            // console.log(index, state.questionNum);
+            console.log(state.questionNum);
             return (
               <Button
                 message={item.btnText}
                 onClickAnswer={onClickAnswer}
-                dispFlag={state.questionNum == index ? "block" : "none"}
+                dispFlag={state.questionNum === index ? "block" : "none"}
               />
             );
-            // }
           })}
           {/* <Button message = {btn}/> */}
         </div>
